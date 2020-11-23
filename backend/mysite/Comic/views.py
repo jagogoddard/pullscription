@@ -68,4 +68,10 @@ def index(request):
     return HttpResponse("Hello, world")
 
 def search(request, query):
-    
+    comics = Comic.objects.filter(full_title__contains=query)
+    json = "comics: ["
+    for comic in comics:
+        json += str(comic)
+        json += ","
+    json[:-1]
+    return HttpResponse(json)
