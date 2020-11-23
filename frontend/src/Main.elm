@@ -67,7 +67,7 @@ viewGif model =
   case model of
     Failure ->
       div []
-        [ text "I could not load a random cat for some reason. "
+        [ text "I could not load a random cat for some reason. :("
         , button [ onClick MorePlease ] [ text "Try Again!" ]
         ]
 
