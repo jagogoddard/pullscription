@@ -1,4 +1,4 @@
-import csv,io,os
+import csv,io,os,datetime
 from django.http import HttpResponse
 from .models import Comic
 from . import views
@@ -69,9 +69,26 @@ def index(request):
 
 def search(request, query):
     comics = Comic.objects.filter(full_title__contains=query)
-    json = "comics: ["
+    json = '{"comics": [ '
     for comic in comics:
         json += str(comic)
         json += ","
-    json[:-1]
+    json = json[:-1]
+    json += "]}"
+    return HttpResponse(json)
+
+def browse(request):
+    today = datetime.date.today()
+    weekdayOffset = (2-today.weekday()) % 7
+    delta = datetime.timedelta(days = weekdayOffset)
+    nextRelease = today + delta
+    dateString = str(nextRelease.month)+'/'+str(nextRelease.day)+'/'+str(nextRelease.year) # Because the sqlite database got a bit screwed
+    #dateString = nextRelease.strftime("%Y-%m-%d")
+    comics = Comic.objects.filter(ship_date=dateString)
+    json = '{"comics": [ '
+    for comic in comics:
+        json += str(comic)
+        json += ","
+    json = json[:-1]
+    json += "]}"
     return HttpResponse(json)
