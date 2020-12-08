@@ -2,93 +2,47 @@ import csv,io,os,datetime
 from django.http import HttpResponse
 from .models import Comic
 from . import views
-
-def index(request):
-    with open('masterData.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            p=Comic(diamd_no=row[''],
-                stock_no=row[''],
-                parent_item_no_alt=row[''],
-                bounce_use_item=row[''],
-                full_title=row[''],
-                main_desc=row[''],
-                variant_desc=row[''],
-                series_code=row[''],
-                issue_no=row[''],
-                issue_seq_no=row[''],
-                volume_tag=row[''],
-                max_issue=row[''],
-                price=row[''],
-                publisher=row[''],
-                upc_no=row[''],
-                short_isbn_no=row[''],
-                ean_no=row[''],
-                cards_per_pack=row[''],
-                pack_per_box=row[''],
-                box_per_case=row[''],
-                discount_code=row[''],
-                increment=row[''],
-                prnt_date=row[''],
-                foc_vendor=row[''],
-                ship_date=row[''],
-                srp=row[''],
-                category=row[''],
-                genre=row[''],
-                brand_code=row[''],
-                mature=row[''],
-                adult=row[''],
-                oa=row[''],
-                caut1=row[''],
-                caut2=row[''],
-                caut3=row[''],
-                resol=row[''],
-                note_price=row[''],
-                order_form_notes=row[''],
-                page=row[''],
-                writer=row[''],
-                artist=row[''],
-                cover_artist=row[''],
-                colorist=row[''],
-                alliance_sku=row[''],
-                foc_date=row[''],
-                offered_date=row[''],
-                number_of_pages=row[''],
-                unit_weight=row[''],
-                unit_length=row[''],
-                unit_width=row[''],
-                unit_height=row[''],
-                case_weight =row['case_weight'],
-                case_length=row['case_length'],
-                case_width=row['case_width'],
-                case_height=row['case_height'],    
-               )
-            p.save()
-
-    return HttpResponse("Hello, world")
+from django.core.exceptions import ObjectDoesNotExist
 
 def search(request, query):
-    comics = Comic.objects.filter(full_title__contains=query)
-    json = '{"comics": [ '
+    words = query.split("-")
+    comics = Comic.objects.filter(full_title__contains=words[0])
+    for word in words:
+        comics = comics.filter(full_title__contains=word)
+    json = '[ '
     for comic in comics:
         json += str(comic)
         json += ","
     json = json[:-1]
-    json += "]}"
+    json += "]"
     return HttpResponse(json)
 
 def browse(request):
     today = datetime.date.today()
     weekdayOffset = (2-today.weekday()) % 7
-    delta = datetime.timedelta(days = weekdayOffset)
+    delta = datetime.timedelta(days = weekdayOffset+28)
     nextRelease = today + delta
     dateString = str(nextRelease.month)+'/'+str(nextRelease.day)+'/'+str(nextRelease.year) # Because the sqlite database got a bit screwed
     #dateString = nextRelease.strftime("%Y-%m-%d")
-    comics = Comic.objects.filter(ship_date=dateString)
-    json = '{"comics": [ '
+    comics = Comic.objects.filter(ship_date=dateString).exclude(oa='Y')#.exclude(mature='Y')
+    json = '[ '
     for comic in comics:
         json += str(comic)
         json += ","
     json = json[:-1]
-    json += "]}"
+    json += "]"
+    return HttpResponse(json)
+
+def get(request, query):
+    words = query.split("-")
+    json = '[ '
+    for word in words:
+        try:
+            comic = Comic.objects.get(stock_no=word)
+            json += str(comic)
+            json += ","
+        except ObjectDoesNotExist:
+            continue
+    json = json[:-1]
+    json += "]"
     return HttpResponse(json)
