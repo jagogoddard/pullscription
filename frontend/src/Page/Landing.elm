@@ -16,8 +16,7 @@ import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Http
-
-
+import Dialog exposing (..)
 
 
 type Model 
@@ -25,6 +24,7 @@ type Model
     | Loading
     | Success (List Comic)
     | None
+
 
 
 type Msg
@@ -41,11 +41,13 @@ type Msg
 
 --INIT
 
+
 init : Session -> ( Session, Model, Cmd Msg )
 init session =
-    ( session, Loading, getComicData )
+    ( session, Loading , getComicData )
 
-    
+
+-- VIEWMAIN   
 
 view : Session -> Model -> Document Msg
 view session model =
@@ -56,11 +58,11 @@ view session model =
                 [ spacing 10, centerX, alignTop ]
                 [ row
                     [ spacing 50, alignTop]
-                    [ ViewHelpers.button [] { onPress = Just HomePressed, label = text "Home"}
-                    , ViewHelpers.button [] { onPress = Just PrimaryPressed, label = text "Browse Comics" }
-                    , ViewHelpers.button [] { onPress = Just SecondaryPressed, label = text "Portal" }
-                    , ViewHelpers.button [] { onPress = Just LoginPressed, label = text "Log in" }
-                    , ViewHelpers.button [] { onPress = Nothing, label = text "Sign up" }
+                    [ currentButton [] { onPress = Nothing, label = text "Home"}
+                    , button [] { onPress = Just PrimaryPressed, label = text "Browse Comics" }
+                    , button [] { onPress = Just SecondaryPressed, label = text "Portal" }
+                    , button [] { onPress = Just LoginPressed, label = text "Log in" }
+                    , button [] { onPress = Nothing, label = text "Sign up" }
                     , aboutButton AboutPressed
                     ]
                 , text ""
@@ -82,6 +84,8 @@ view session model =
 
 
 
+-- UPDATE
+
 update : Msg -> Session -> Model -> ( Session, Model, Cmd Msg )
 update msg session model =
     case msg of
@@ -89,7 +93,7 @@ update msg session model =
             ( session |> Session.navPush (Route.Login Nothing), model, Cmd.none )
         
         PrimaryPressed ->
-            ( session |> Session.navPush Route.Root, model, Cmd.none )
+            ( session |> Session.navPush Route.Primary, model, Cmd.none )
 
         SecondaryPressed ->
             ( session |> Session.navPush Route.Secondary, model, Cmd.none )
@@ -101,29 +105,23 @@ update msg session model =
             ( session |> Session.navPush Route.Root, model, Cmd.none )
         
         Next ->
-            (session, model, Cmd.none)
+            ( session, model, Cmd.none )
 
         Prev ->
-          (session, model, Cmd.none) --Go to prev comic
+            ( session, model, Cmd.none ) --Go to prev comic
 
         Reload ->
-          (session, Loading, getComicData)
+            ( session, Loading, getComicData )
 
         GotComics result ->
-          case result of
-            Ok comicList ->
-              (session, Success comicList, Cmd.none)
-            Err _ ->
-              (session, Failure result, Cmd.none)
+            case result of
+                Ok comicList ->
+                    (session, Success comicList, Cmd.none)
+                Err _ ->
+                    (session, Failure result, Cmd.none)
 
 
-
---UPDATE
-
-
-        
-
---VIEW
+--VIEWCOMICS
 
 viewList : Model -> Element Msg
 viewList model =
@@ -163,6 +161,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
   Sub.none
 
+-- COMICINFO
 getComicData : Cmd Msg
 getComicData = 
     Http.get { url = "http://173.255.241.100:8080/api/search/man", expect = Http.expectJson GotComics comicListDecoder}
@@ -184,6 +183,7 @@ comicListDecoder : Decoder (List Comic)
 comicListDecoder =
     Jd.list comicDecoder
 
+-- HELPERS
 
 gray =
     rgb255 128 128 128
