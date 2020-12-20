@@ -102,7 +102,7 @@ view session model =
                     ]
                     { onChange = UsernameChanged
                     , text = model.username
-                    , placeholder = Just <| Input.placeholder [] (text "your.username")
+                    , placeholder = Just <| Input.placeholder [] (text "username")
                     , label = Input.labelBelow [] (text "Username")
                     }
                 , Input.currentPassword

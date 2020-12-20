@@ -1,13 +1,11 @@
 module Page.Landing exposing (Model, Msg, init, update, view)
 
 import Browser exposing (Document)
-import Element exposing( spacing, text, wrappedRow, row, paragraph, centerX, alignTop, alignLeft, alignBottom)
 import Route
 import Session exposing (Session)
 import ViewHelpers exposing (..)
 import Html.Attributes exposing (rows)
 import Html exposing (div, Html, map)
-import Element exposing (..)
 import Element.Region as Region
 import Json.Decode as Jd exposing (Decoder, field, string, map7, list)
 import Element exposing (..)
@@ -59,10 +57,8 @@ view session model =
                 [ row
                     [ spacing 50, alignTop]
                     [ currentButton [] { onPress = Nothing, label = text "Home"}
-                    , button [] { onPress = Just PrimaryPressed, label = text "Browse Comics" }
-                    , button [] { onPress = Just SecondaryPressed, label = text "Portal" }
+                    , button [] { onPress = Just PrimaryPressed, label = text "Search" }
                     , button [] { onPress = Just LoginPressed, label = text "Log in" }
-                    , button [] { onPress = Nothing, label = text "Sign up" }
                     , aboutButton AboutPressed
                     ]
                 , text ""
@@ -153,8 +149,15 @@ viewComic model =
 
 comicsListInHtml : (List Comic) -> Element Msg
 comicsListInHtml comicsList = 
-  row [] (List.map (\l -> row [] [text l.title]) comicsList)
+  el [] (row [] [image [width (px 150)] {src=("http://www.pullscription.com/pictures/LowRes/" ++ (individualComic comicsList).stockNo ++ ".jpg"), description="Comic Cover"}])
 
+individualComic : (List Comic) -> Comic
+individualComic comicsList =
+   Maybe.withDefault dummyComic (List.head comicsList)
+
+dummyComic : Comic
+dummyComic =
+   { title= "Dummy Value", price= "Dummy Value", creators= "Dummy Value", publisher= "Dummy Value",  releaseDate= "Dummy Value", description= "Dummy Value", diamondNo= "Dummy Value", stockNo= "Dummy Value"}
 --SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
@@ -164,20 +167,21 @@ subscriptions model =
 -- COMICINFO
 getComicData : Cmd Msg
 getComicData = 
-    Http.get { url = "http://173.255.241.100:8080/api/search/man", expect = Http.expectJson GotComics comicListDecoder}
+    Http.get { url = "https://cors-anywhere.herokuapp.com/http://173.255.241.100:8080/api/comics/browse", expect = Http.expectJson GotComics comicListDecoder}
 
-type alias Comic = { title: String, price: String, creators: String, publisher: String,  releaseDate: String, description: String, diamondNo: String}
+type alias Comic = { title: String, price: String, creators: String, publisher: String,  releaseDate: String, description: String, diamondNo: String, stockNo: String}
 
 comicDecoder : Decoder Comic
 comicDecoder = 
-    Jd.map7 Comic
+    Jd.map8 Comic
         (field "full_title" string)
-        (field "srp" string)
+        (field "price" string)
         (field "writer" string)
         (field "publisher" string)
         (field "ship_date" string)
         (field "main_desc" string)
         (field "diamd_no" string)
+        (field "stock_no" string)
 
 comicListDecoder : Decoder (List Comic)
 comicListDecoder =
