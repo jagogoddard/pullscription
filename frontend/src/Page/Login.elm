@@ -115,7 +115,7 @@ view session model =
                     , show = False
                     }
                 , button [] { onPress = Just LoginPressed, label = text "Log in" }
-                , button [] { onPress = Just LoginPressed, label = text "Register" }
+                --, button [] { onPress = Just LoginPressed, label = text "Register" }
                 , button [] { onPress = Just CancelPressed, label = text "Cancel" }
                 ]
         ]

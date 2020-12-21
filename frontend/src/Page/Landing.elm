@@ -57,7 +57,8 @@ view session model =
                 [ row
                     [ spacing 50, centerX, alignTop]
                     [ currentButton [] { onPress = Nothing, label = text "Home"}
-                    --, button [] { onPress = Just BrowsePressed, label = text "Search" }
+                    , button [] { onPress = Just BrowsePressed, label = text "Search" }
+                    , button [] { onPress = Just PortalPressed, label = Element.text "Pull List" }
                     , button [] { onPress = Just LoginPressed, label = text "Log in" }
                     , aboutButton AboutPressed
                     ]
