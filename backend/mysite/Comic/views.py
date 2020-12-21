@@ -10,13 +10,12 @@ def search(request, query):
     comics = Comic.objects.filter(full_title__contains=words[0])
     for word in words:
         comics = comics.filter(full_title__contains=word)
-    json = '<pre>[  '
+    json = '[  '
     for comic in comics:
         json += str(comic)
-        json += ",\n"
-    json = json[:-2]
-    json += "]</pre>"
-    json.replace('\n','<br/>')
+        json += ","
+    json = json[:-1]
+    json += "]"
     return HttpResponse(json)
 
 def browse(request):
@@ -27,28 +26,26 @@ def browse(request):
     dateString = str(nextRelease.month)+'/'+str(nextRelease.day)+'/'+str(nextRelease.year) # Because the sqlite database got a bit screwed
     #dateString = nextRelease.strftime("%Y-%m-%d")
     comics = Comic.objects.filter(ship_date=dateString).exclude(oa='Y')#.exclude(mature='Y')
-    json = '<pre>[  '
+    json = '[  '
     for comic in comics:
         json += str(comic)
-        json += ",\n"
-    json = json[:-2]
-    json += "]</pre>"
-    json.replace('\n','<br/>')
+        json += ","
+    json = json[:-1]
+    json += "]"
     return HttpResponse(json)
 
 def get(request, query):
     words = query.split("-")
-    json = '<pre>[  '
+    json = '[  '
     for word in words:
         try:
             comic = Comic.objects.get(stock_no=word)
             json += str(comic)
-            json += ",\n"
+            json += ","
         except ObjectDoesNotExist:
             continue
-    json = json[:-2]
-    json += "]</pre>"
-    json.replace('\n','<br/>')
+    json = json[:-1]
+    json += "]"
     return HttpResponse(json)
 
 def add(request, person, query):
