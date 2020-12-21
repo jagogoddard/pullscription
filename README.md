@@ -5,9 +5,9 @@ Here is a fully working (but not complete) backend/frontend for pullscription.co
 
 Here are instructions how to set it up:
 
-###USING OUR ALREADY-CONFIGURED REMOTE HOST
+### USING OUR ALREADY-CONFIGURED REMOTE HOST
 
-#####First, let's start the django backend
+##### First, let's start the django backend
 
 Open a terminal. Type the following commands in this order:
 
@@ -23,7 +23,7 @@ python3 manage.py runserver 0.0.0.0:8080
 
 This starts the django test server listening over any interface, on port 8080. Don't close this window.
 
-#####Now, the front end!
+##### Now, the front end!
 
 Open a new terminal window. Log in again:
 
@@ -40,7 +40,7 @@ elm reactor
 Leave both windows open, and navigate your browser to [173.255.241.100:8000](http://173.255.241.100:8000). Enjoy.
 
 
-###TO SET UP ON A PERSONAL SERVER, AT HOME
+### TO SET UP ON A PERSONAL SERVER, AT HOME
 
 Download the elm source and place it in the appropriate directory. We will assume you have [elm](http://www.elm-lang.org) installed already.
 
