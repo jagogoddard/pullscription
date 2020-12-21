@@ -35,7 +35,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    #path('api/comics/', include('Comic.urls')),
+    path('api/comics/', include('Comic.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/', include('authentication.urls')),
