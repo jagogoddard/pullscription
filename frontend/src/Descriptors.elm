@@ -4,8 +4,8 @@ module Descriptors exposing
     , loginDescriptor
     , logoutDescriptor
     , notFoundDescriptor
-    , primaryDescriptor
-    , secondaryDescriptor
+    , browseDescriptor
+    , portalDescriptor
     )
 
 import Browser exposing (Document)
@@ -15,8 +15,8 @@ import Page.Landing as Landing
 import Page.Login as Login
 import Page.Logout as Logout
 import Page.NotFound as NotFound
-import Page.Primary as Primary
-import Page.Secondary as Secondary
+import Page.Browse as Browse
+import Page.Portal as Portal
 import PageMsg exposing (PageMsg(..))
 import Session exposing (Session)
 
@@ -57,16 +57,16 @@ logoutDescriptor =
     }
 
 
-primaryDescriptor : Descriptor PageMsg Primary.Msg Primary.Model
-primaryDescriptor =
-    { view = Primary.view
-    , update = Primary.update
+browseDescriptor : Descriptor PageMsg Browse.Msg Browse.Model
+browseDescriptor =
+    { view = Browse.view
+    , update = Browse.update
     , subscriptions = Nothing
-    , msgWrapper = PrimaryMsg
+    , msgWrapper = BrowseMsg
     , msgFilter =
         \main ->
             case main of
-                PrimaryMsg msg ->
+                BrowseMsg msg ->
                     Just msg
 
                 _ ->
@@ -75,16 +75,16 @@ primaryDescriptor =
     }
 
 
-secondaryDescriptor : Descriptor PageMsg Secondary.Msg Secondary.Model
-secondaryDescriptor =
-    { view = Secondary.view
-    , update = Secondary.update
+portalDescriptor : Descriptor PageMsg Portal.Msg Portal.Model
+portalDescriptor =
+    { view = Portal.view
+    , update = Portal.update
     , subscriptions = Nothing
-    , msgWrapper = SecondaryMsg
+    , msgWrapper = PortalMsg
     , msgFilter =
         \main ->
             case main of
-                SecondaryMsg msg ->
+                PortalMsg msg ->
                     Just msg
 
                 _ ->

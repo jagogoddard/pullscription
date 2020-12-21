@@ -9,8 +9,8 @@ import Page.Landing as Landing
 import Page.Login as Login
 import Page.Logout as Logout
 import Page.NotFound as NotFound
-import Page.Primary as Primary
-import Page.Secondary as Secondary
+import Page.Browse as Browse
+import Page.Portal as Portal
 import PageMsg exposing (..)
 import Route exposing (..)
 import Session exposing (Session)
@@ -34,7 +34,7 @@ route url session =
                         |> Page.init landingDescriptor
 
                 ( Root, Just _ ) ->
-                    newSession |> Primary.init |> Page.init primaryDescriptor
+                    newSession |> Browse.init |> Page.init browseDescriptor
 
                 ( About, _ ) ->
                     newSession |> About.init |> Page.init aboutDescriptor
@@ -45,17 +45,17 @@ route url session =
                 ( Logout, _ ) ->
                     newSession |> Logout.init |> Page.init logoutDescriptor
 
-                ( Primary, _) ->
-                    newSession |> Primary.init |> Page.init primaryDescriptor
+                ( Browse, _) ->
+                    newSession |> Browse.init |> Page.init browseDescriptor
 
-                ( Secondary, Just _ ) ->
-                    newSession |> Secondary.init |> Page.init secondaryDescriptor
+                ( Portal, Just _ ) ->
+                    newSession |> Portal.init |> Page.init portalDescriptor
 
                 ( Login successUrl, Nothing ) ->
                     newSession |> Login.init successUrl |> Page.init loginDescriptor
 
                 ( Login Nothing, Just _ ) ->
-                    newSession |> Primary.init |> Page.init primaryDescriptor
+                    newSession |> Browse.init |> Page.init browseDescriptor
 
                 ( Login (Just urlString), Just _ ) ->
                     case urlString |> Url.fromString of
@@ -63,9 +63,8 @@ route url session =
                             route successUrl newSession
 
                         Nothing ->
-                            newSession |> Primary.init |> Page.init primaryDescriptor
+                            newSession |> Browse.init |> Page.init browseDescriptor
 
-                -- Catch-all to redirect session-required pages to Login if no session is present
                 ( _, Nothing ) ->
                     newSession |> Login.init (Just (Url.toString url)) |> Page.init loginDescriptor
     in

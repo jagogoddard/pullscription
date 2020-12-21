@@ -27,8 +27,8 @@ type Model
 
 type Msg
     = LoginPressed
-    | PrimaryPressed
-    | SecondaryPressed
+    | BrowsePressed
+    | PortalPressed
     | AboutPressed
     | HomePressed
     | Next
@@ -55,9 +55,9 @@ view session model =
             column
                 [ spacing 10, centerX, alignTop ]
                 [ row
-                    [ spacing 50, alignTop]
+                    [ spacing 50, centerX, alignTop]
                     [ currentButton [] { onPress = Nothing, label = text "Home"}
-                    , button [] { onPress = Just PrimaryPressed, label = text "Search" }
+                    , button [] { onPress = Just BrowsePressed, label = text "Search" }
                     , button [] { onPress = Just LoginPressed, label = text "Log in" }
                     , aboutButton AboutPressed
                     ]
@@ -88,11 +88,11 @@ update msg session model =
         LoginPressed ->
             ( session |> Session.navPush (Route.Login Nothing), model, Cmd.none )
         
-        PrimaryPressed ->
-            ( session |> Session.navPush Route.Primary, model, Cmd.none )
+        BrowsePressed ->
+            ( session |> Session.navPush Route.Browse, model, Cmd.none )
 
-        SecondaryPressed ->
-            ( session |> Session.navPush Route.Secondary, model, Cmd.none )
+        PortalPressed ->
+            ( session |> Session.navPush Route.Portal, model, Cmd.none )
 
         AboutPressed ->
             ( session |> Session.navPush Route.About, model, Cmd.none )
@@ -189,36 +189,16 @@ comicListDecoder =
 
 -- HELPERS
 
-gray =
-    rgb255 128 128 128
 
-
-white =
-    rgb255 255 255 255
-
-buttonRounded =
-    10
-
-button attributes =
-    Input.button
-        ([ Border.rounded buttonRounded
-         , padding 20
-         , Background.color gray
-         , Border.color white
-         , Border.width 5
-         ]
-            ++ attributes
-        )
 
 windowComic attributes =
     el
-        ([ Background.color gray
-         , Font.color white
+        ([ Background.color white
+         , Font.color black
          , Border.rounded windowRounded
          , paddingXY 220 180
          ]
             ++ attributes
         )
-windowRounded =
-    10
+
 

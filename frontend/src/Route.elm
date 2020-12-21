@@ -22,8 +22,8 @@ type Destination
     | NotFound String
     | Login (Maybe String)
     | Logout
-    | Primary
-    | Secondary
+    | Browse
+    | Portal
     | About
 
 
@@ -41,10 +41,10 @@ urlFor destination =
         Logout ->
             "/logout"
 
-        Primary ->
+        Browse ->
             "/browsecomics"
 
-        Secondary ->
+        Portal ->
             "/portal"
 
         About ->
@@ -59,8 +59,8 @@ routeParser =
         [ map Root top
         , map Login (s "login" <?> Query.string "success")
         , map Logout (s "logout")
-        , map Primary (s "browsecomics")
-        , map Secondary (s "portal")
+        , map Browse (s "browsecomics")
+        , map Portal (s "portal")
         , map About (s "about")
 
         -- NotFound is deliberately omitted
