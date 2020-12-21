@@ -10,5 +10,7 @@ port clearToken : () -> Cmd msg
 
 port storeToken : Data.Token -> Cmd msg
 
+--port storePull : Data.Pull -> Cmd msg
+
 --Connect BACKEND to store AuthTokens (Username and Password for now; later add NAME/SHOPNAME and if shop address)
 

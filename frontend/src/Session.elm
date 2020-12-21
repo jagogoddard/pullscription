@@ -14,6 +14,8 @@ module Session exposing
     , reset
     , setUrl
     , update
+    --, getPullList
+    --, addPull
     )
 
 import Browser.Navigation as Navigation
@@ -47,12 +49,12 @@ type Event
 
 init : Navigation.Key -> Url -> Maybe Data.Token -> Session
 init key url authToken =
-    Session <| Rep key url authToken []
+    Session <| Rep key url authToken [] 
 
 
 reset : Session -> Session
 reset (Session session) =
-    init session.navKey session.url session.authToken
+    init session.navKey session.url session.authToken 
 
 
 update : Msg -> Session -> ( Session, Maybe Event )
@@ -61,6 +63,13 @@ update msg (Session session) =
         Noop ->
             ( Session session, Nothing )
 
+--addPull token (Session session) =
+   -- { session | pullList = Just token }
+       -- |> addCmd (Ports.storeToken token)
+       -- |> Session
+
+--getPullList (Session session) =
+   -- session.pullList
 
 getAuthToken (Session session) =
     session.authToken

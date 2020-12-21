@@ -43,10 +43,10 @@ view session model =
                 [ spacing 10 ]
                 [row
                     [ spacing 50, centerX, alignTop ]
-                    [ button [] { onPress = Just HomePressed, label = Element.text "Home"}
-                    , button [] { onPress = Just BrowsePressed, label = Element.text "Search"  }
-                    , button [] { onPress = Just PortalPressed, label = Element.text "Portal" }
-                    , button [] { onPress = Just LoginPressed, label = Element.text "Log in" }
+                    [ button [] { onPress = Just HomePressed, label = Element.text "Back to Home"}
+                    --, button [] { onPress = Just BrowsePressed, label = Element.text "Search"  }
+                    --, button [] { onPress = Just PortalPressed, label = Element.text "Portal" }
+                    --, button [] { onPress = Just LoginPressed, label = Element.text "Log in" }
                     , currentButton [] { onPress = Nothing, label = Element.text "About"  }
                     ]
                 , text ""

@@ -126,7 +126,7 @@ currentButton attributes =
         ([ Border.rounded buttonRounded
          , padding 20
          , Background.color white
-         , Border.color yellow
+         , Border.color black
          , Border.width 5
          , Font.italic
          , Font.family

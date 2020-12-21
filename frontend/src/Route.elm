@@ -63,7 +63,6 @@ routeParser =
         , map Portal (s "portal")
         , map About (s "about")
 
-        -- NotFound is deliberately omitted
         ]
 
 
