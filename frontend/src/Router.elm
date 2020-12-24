@@ -6,11 +6,12 @@ import Msg exposing (Msg)
 import Page
 import Page.About as About
 import Page.Landing as Landing
-import Page.Login as Login
+import Page.Login2 as Login
 import Page.Logout as Logout
 import Page.NotFound as NotFound
 import Page.Browse as Browse
 import Page.Portal as Portal
+import Page.Register as Register
 import PageMsg exposing (..)
 import Route exposing (..)
 import Session exposing (Session)
@@ -55,7 +56,7 @@ route url session =
                     newSession |> Login.init successUrl |> Page.init loginDescriptor
 
                 ( Login Nothing, Just _ ) ->
-                    newSession |> Browse.init |> Page.init browseDescriptor
+                    newSession |> Landing.init |> Page.init landingDescriptor
 
                 ( Login (Just urlString), Just _ ) ->
                     case urlString |> Url.fromString of
@@ -64,6 +65,9 @@ route url session =
 
                         Nothing ->
                             newSession |> Browse.init |> Page.init browseDescriptor
+
+                ( Register, _) ->
+                    newSession |> Register.init |> Page.init registerDescriptor
 
                 ( _, Nothing ) ->
                     newSession |> Login.init (Just (Url.toString url)) |> Page.init loginDescriptor

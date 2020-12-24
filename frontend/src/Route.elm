@@ -25,6 +25,7 @@ type Destination
     | Browse
     | Portal
     | About
+    | Register
 
 
 urlFor destination =
@@ -50,6 +51,9 @@ urlFor destination =
         About ->
             "/about"
 
+        Register ->
+            "/register"
+
         NotFound failedUrl ->
             absolute [ "notfound" ] [ Builder.string "notFoundKey" failedUrl ]
 
@@ -62,6 +66,7 @@ routeParser =
         , map Browse (s "browsecomics")
         , map Portal (s "portal")
         , map About (s "about")
+        , map Register (s "register")
 
         ]
 

@@ -6,17 +6,19 @@ module Descriptors exposing
     , notFoundDescriptor
     , browseDescriptor
     , portalDescriptor
+    , registerDescriptor
     )
 
 import Browser exposing (Document)
 import Page exposing (Descriptor)
 import Page.About as About
 import Page.Landing as Landing
-import Page.Login as Login
+import Page.Login2 as Login
 import Page.Logout as Logout
 import Page.NotFound as NotFound
 import Page.Browse as Browse
 import Page.Portal as Portal
+import Page.Register as Register
 import PageMsg exposing (PageMsg(..))
 import Session exposing (Session)
 
@@ -139,6 +141,23 @@ landingDescriptor =
         \main ->
             case main of
                 LandingMsg msg ->
+                    Just msg
+
+                _ ->
+                    Nothing
+    , wrapSessionEvent = Nothing
+    }
+
+registerDescriptor : Descriptor PageMsg Register.Msg Register.Model
+registerDescriptor =
+    { view = Register.view
+    , update = Register.update
+    , subscriptions = Nothing
+    , msgWrapper = RegisterMsg
+    , msgFilter =
+        \main ->
+            case main of
+                RegisterMsg msg ->
                     Just msg
 
                 _ ->
