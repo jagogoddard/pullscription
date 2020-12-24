@@ -34,7 +34,7 @@ route url session =
                         |> Page.init landingDescriptor
 
                 ( Root, Just _ ) ->
-                    newSession |> Browse.init |> Page.init browseDescriptor
+                    newSession |> Landing.init |> Page.init landingDescriptor
 
                 ( About, _ ) ->
                     newSession |> About.init |> Page.init aboutDescriptor

@@ -150,7 +150,7 @@ viewComic model =
 
 comicsListInHtml : (List Comic) -> Element Msg
 comicsListInHtml comicsList = 
-  el [] (row [] [image [width (px 150)] {src=("http://www.pullscription.com/pictures/LowRes/" ++ (individualComic comicsList).stockNo ++ ".jpg"), description="Comic Cover"}])
+  row [] [row [] [image [width (px 150)] {src=("http://www.pullscription.com/pictures/LowRes/" ++ (individualComic comicsList).stockNo ++ ".jpg"), description="Comic Cover"}]]
 
 individualComic : (List Comic) -> Comic
 individualComic comicsList =
